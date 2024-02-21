@@ -1,42 +1,28 @@
 package com.victorfigma.fintrack;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
-
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 
-import com.victorfigma.fintrack.databinding.ActivityMainBinding;
+import androidx.appcompat.app.AppCompatActivity;
+
 
 public class MainActivity extends AppCompatActivity {
 
-    ActivityMainBinding binding;
-
+    public static int SPLASH_TIMER = 1303;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = ActivityMainBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
+        setContentView(R.layout.activity_main);
 
-        replaceFragment(new StocksFragment());
-        binding.bottomNavbarView.setBackground(null);
-
-        binding.bottomNavbarView.setOnItemSelectedListener(item -> {
-
-            //Can't do a switch since constants are not final in ADT 14
-            int id = item.getItemId();
-            if(id == R.id.stocks) replaceFragment(new StocksFragment());
-            else if(id == R.id.portfolio) replaceFragment(new PortfolioFragment());
-
-            return true;
-        });
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                Intent intent = new Intent(MainActivity.this, HomeActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        }, SPLASH_TIMER);
     }
 
-    private void replaceFragment(Fragment fragment){
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.frame_layout, fragment);
-        fragmentTransaction.commit();
-    }
 }
