@@ -15,20 +15,21 @@
         android:id="@+id/frame_layout"/>
 
     <com.google.android.material.bottomappbar.BottomAppBar
+        android:id="@+id/bottomNavbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/bottomNavbar"
         android:layout_gravity="bottom"
-        android:background="@color/white"
-        app:fabCradleRoundedCornerRadius="50dp">
+        android:background="@android:color/transparent"
+        app:fabCradleRoundedCornerRadius="30dp">
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/bottomNavbarView"
+            android:layout_gravity="bottom"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/bottomNavbarView"
-            app:labelVisibilityMode="labeled"
             android:background="@android:color/transparent"
-            app:menu="@menu/bottom_navbar"/>
+            app:labelVisibilityMode="labeled"
+            app:menu="@menu/bottom_navbar" />
 
     </com.google.android.material.bottomappbar.BottomAppBar>
 

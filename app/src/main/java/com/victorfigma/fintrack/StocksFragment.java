@@ -25,8 +25,8 @@ public class StocksFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_stocks, container, false);
 
-        String[] defaultListStocks = {"^GSPC", "ETH"};
-        int[] defaultListPrices = {1, 2};
+        String[] defaultListStocks = {"^GSPC", "ETH", "ETH", "ETH", "ETH", "ETH", "ETH", "ETH", "ETH", "ETH", "ETH", "a", "d", "END"};
+        int[] defaultListPrices = {1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3 ,3 ,4 ,5};
 
         for (int i=0; i < defaultListStocks.length; i++){
             listData = new StocksListData(defaultListStocks[i], defaultListPrices[i]);
