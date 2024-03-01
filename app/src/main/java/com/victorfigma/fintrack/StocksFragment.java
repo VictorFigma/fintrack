@@ -15,10 +15,10 @@ import java.util.Collections;
 
 public class StocksFragment extends Fragment {
 
-    ListView listView;
-    StocksListAdapter listAdapter;
-    ArrayList<StocksListData> dataArrayList= new ArrayList<>();
-    StocksListData listData;
+    private ListView listView;
+    private StocksListAdapter listAdapter;
+    private ArrayList<StocksListData> dataArrayList= new ArrayList<>();
+    private StocksListData listData;
 
 
 

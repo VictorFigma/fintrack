@@ -15,12 +15,10 @@ import java.util.Collections;
 
 public class PortfolioFragment extends Fragment {
 
-    ListView listView;
-    PortfolioListAdapter listAdapter;
-    ArrayList<PortfolioListData> dataArrayList= new ArrayList<>();
-    PortfolioListData listData;
-
-
+    private ListView listView;
+    private PortfolioListAdapter listAdapter;
+    private ArrayList<PortfolioListData> dataArrayList= new ArrayList<>();
+    private PortfolioListData listData;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

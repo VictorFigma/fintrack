@@ -30,7 +30,7 @@ public class StocksListAdapter extends ArrayAdapter<StocksListData> {
         TextView listPrice = view.findViewById(R.id.stocksStockPrice);
 
         listStock.setText(listData.stock);
-        listPrice.setText(listData.price + " $");
+        listPrice.setText(listData.price);
 
         return view;
     }

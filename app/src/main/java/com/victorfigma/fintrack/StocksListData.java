@@ -3,7 +3,7 @@ package com.victorfigma.fintrack;
 import java.util.Comparator;
 
 public class StocksListData {
-    String stock, price;
+    protected String stock, price;
 
     public StocksListData(String stock, int price) {
         this.stock = stock;
