@@ -11,6 +11,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class StocksFragment extends Fragment {
 
@@ -32,6 +33,8 @@ public class StocksFragment extends Fragment {
             listData = new StocksListData(defaultListStocks[i], defaultListPrices[i]);
             dataArrayList.add(listData);
         }
+
+        Collections.sort(dataArrayList, new StocksListData.StockComparator());
 
         listView = (ListView) view.findViewById(R.id.stocksListView);
         listAdapter = new StocksListAdapter(getActivity(), dataArrayList);
