@@ -12,15 +12,15 @@ import androidx.annotation.Nullable;
 
 import java.util.ArrayList;
 
-public class StocksListAdapter extends ArrayAdapter<StocksListData> {
-    public StocksListAdapter(@NonNull Context context, ArrayList<StocksListData> dataArrayList){
+public class StocksListAdapter extends ArrayAdapter<StringIntPair> {
+    public StocksListAdapter(@NonNull Context context, ArrayList<StringIntPair> dataArrayList){
         super(context, R.layout.listed_item_stocks, dataArrayList);
     }
 
     @NonNull
     @Override
     public View getView(int position, @Nullable View view, ViewGroup parent){
-        StocksListData listData = getItem(position);
+        StringIntPair listData = getItem(position);
 
         if(view == null){
             view = LayoutInflater.from(getContext()).inflate(R.layout.listed_item_stocks, parent, false);
@@ -29,8 +29,8 @@ public class StocksListAdapter extends ArrayAdapter<StocksListData> {
         TextView listStock = view.findViewById(R.id.stocksStockCode);
         TextView listPrice = view.findViewById(R.id.stocksStockPrice);
 
-        listStock.setText(listData.stock);
-        listPrice.setText(listData.price);
+        listStock.setText(listData.code);
+        listPrice.setText("-1");  //TODO retrieve stock price
 
         return view;
     }
