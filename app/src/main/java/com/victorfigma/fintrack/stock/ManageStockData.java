@@ -1,11 +1,13 @@
-package com.victorfigma.fintrack;
+package com.victorfigma.fintrack.stock;
 
 import android.content.Context;
 import android.widget.Toast;
 
+import com.victorfigma.fintrack.utils.SharedPreferencesUtil;
+
 public class ManageStockData {
 
-    protected static void addStock(Context context, String code){
+    public static void addStock(Context context, String code){
         SharedPreferencesUtil util = new SharedPreferencesUtil(context, "my_stocks");
         String[] stockList = util.getStocks();
 
@@ -19,7 +21,7 @@ public class ManageStockData {
         showToast(context, "TODO Validation" + code); //TODO
     }
 
-    protected static String[] addStringtoArray(String [] stockList, String string){
+    public static String[] addStringtoArray(String [] stockList, String string){
         int newLength = stockList == null ? 1 : stockList.length + 1;
         String[] updatedStockList = new String[newLength];
 
@@ -30,7 +32,7 @@ public class ManageStockData {
         return updatedStockList;
     }
 
-    protected static boolean isStockPresent(Context context, String array[], String code) {
+    public static boolean isStockPresent(Context context, String array[], String code) {
         if (array == null) {
             return false;
         }
@@ -44,7 +46,7 @@ public class ManageStockData {
         return false;
     }
 
-    protected static boolean isValidStock(Context context, String code){
+    public static boolean isValidStock(Context context, String code){
         if(code.length() > 6){
             showToast(context, code + " is too long!");
             return false;

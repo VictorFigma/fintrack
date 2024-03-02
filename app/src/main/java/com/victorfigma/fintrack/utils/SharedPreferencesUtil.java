@@ -1,4 +1,4 @@
-package com.victorfigma.fintrack;
+package com.victorfigma.fintrack.utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;

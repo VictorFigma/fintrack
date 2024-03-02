@@ -1,11 +1,14 @@
-package com.victorfigma.fintrack;
+package com.victorfigma.fintrack.portfolio;
 
 import android.content.Context;
 import android.widget.Toast;
 
+import com.victorfigma.fintrack.utils.SharedPreferencesUtil;
+import com.victorfigma.fintrack.utils.StringFloatPair;
+
 public class ManagePortfolioData {
 
-    protected static StringFloatPair[] addPairToArray(StringFloatPair[] pairList, String code, float quantity) {
+    public static StringFloatPair[] addPairToArray(StringFloatPair[] pairList, String code, float quantity) {
         int newLength = pairList == null ? 1 : pairList.length + 1;
         StringFloatPair[] updatedPairList = new StringFloatPair[newLength];
 
@@ -16,7 +19,7 @@ public class ManagePortfolioData {
         return updatedPairList;
     }
 
-    protected static void addPortfolio(Context context, String code, String qtty){
+    public static void addPortfolio(Context context, String code, String qtty){
         SharedPreferencesUtil util = new SharedPreferencesUtil(context, "my_portfolio");
         StringFloatPair[] pairList = util.getPortfolio();
 
@@ -31,7 +34,7 @@ public class ManagePortfolioData {
         showToast(context,"TODO Validation" + code + qtty); //TODO
     }
 
-    protected static boolean isStockPresent(Context context, StringFloatPair array[], String code) {
+    public static boolean isStockPresent(Context context, StringFloatPair array[], String code) {
         if (array == null) {
             return false;
         }
@@ -45,7 +48,7 @@ public class ManagePortfolioData {
         return false;
     }
 
-    protected static boolean isValidQtty(Context context, String qtty){
+    public static boolean isValidQtty(Context context, String qtty){
         if(qtty.length() > 9){
             showToast(context, qtty + " is too big!");
             return false;
@@ -60,7 +63,7 @@ public class ManagePortfolioData {
         }
     }
 
-    protected static boolean isValidStock(Context context, String code){
+    public static boolean isValidStock(Context context, String code){
         if(code.length() > 6){
             showToast(context, code + " is too long!");
             return false;

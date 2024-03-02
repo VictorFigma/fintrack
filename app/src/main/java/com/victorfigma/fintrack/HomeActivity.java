@@ -13,6 +13,10 @@ import android.widget.EditText;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.victorfigma.fintrack.databinding.ActivityHomeBinding;
+import com.victorfigma.fintrack.portfolio.ManagePortfolioData;
+import com.victorfigma.fintrack.portfolio.PortfolioFragment;
+import com.victorfigma.fintrack.stock.ManageStockData;
+import com.victorfigma.fintrack.stock.StocksFragment;
 
 public class HomeActivity extends AppCompatActivity {
 

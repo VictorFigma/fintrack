@@ -1,4 +1,4 @@
-package com.victorfigma.fintrack;
+package com.victorfigma.fintrack.stock;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -9,6 +9,9 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
+import com.victorfigma.fintrack.R;
+import com.victorfigma.fintrack.utils.StringFloatPair;
 
 import java.util.ArrayList;
 

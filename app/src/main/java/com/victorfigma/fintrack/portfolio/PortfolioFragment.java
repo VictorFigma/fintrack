@@ -1,4 +1,4 @@
-package com.victorfigma.fintrack;
+package com.victorfigma.fintrack.portfolio;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -7,6 +7,10 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 
 import androidx.fragment.app.Fragment;
+
+import com.victorfigma.fintrack.R;
+import com.victorfigma.fintrack.utils.SharedPreferencesUtil;
+import com.victorfigma.fintrack.utils.StringFloatPair;
 
 import java.util.ArrayList;
 import java.util.Collections;

@@ -1,4 +1,4 @@
-package com.victorfigma.fintrack;
+package com.victorfigma.fintrack.utils;
 
 import java.util.Comparator;
 
