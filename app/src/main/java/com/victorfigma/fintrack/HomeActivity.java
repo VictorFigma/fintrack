@@ -50,23 +50,55 @@ public class HomeActivity extends AppCompatActivity {
         });
     }
 
-    private void replaceFragment(Fragment fragment){
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.frame_layout, fragment);
-        fragmentTransaction.commit();
+    private StringFloatPair[] addPairToArray(StringFloatPair[] pairList, String code, float quantity) {
+        int newLength = pairList == null ? 1 : pairList.length + 1;
+        StringFloatPair[] updatedPairList = new StringFloatPair[newLength];
+
+        if (pairList != null) {
+            System.arraycopy(pairList, 0, updatedPairList, 0, pairList.length);
+        }
+        updatedPairList[newLength - 1] = new StringFloatPair(code, quantity);
+        return updatedPairList;
     }
 
-    private void showDialog(){
-        Dialog dialog = new Dialog(this);
-        if(currentFragment == R.id.stocks) dialog.setContentView(R.layout.add_stock);
-        else if(currentFragment == R.id.portfolio) dialog.setContentView(R.layout.add_portfolio);
-        buttomns_actions(dialog);
-        dialog.show();
+    private void addPortfolio(String code, String qtty){
+        SharedPreferencesUtil util = new SharedPreferencesUtil(this, "my_portfolio");
+        StringFloatPair[] pairList = util.getPortfolio();
+
+        if(isStockPresent(pairList, code)) return;
+        if(!isValidStock(code)) return;
+        if(!isValidQtty(qtty)) return;
+
+        pairList = addPairToArray(pairList, code, Float.parseFloat(qtty));
+        util.setPortfolio(pairList);
+
+        replaceFragment(new PortfolioFragment());
+        showToast(code + " successfully added");
     }
 
-    private void showToast(String text){
-        Toast.makeText(HomeActivity.this, text, Toast.LENGTH_SHORT).show();
+    private void addStock(String code){
+        SharedPreferencesUtil util = new SharedPreferencesUtil(this, "my_stocks");
+        String[] stockList = util.getStocks();
+
+        if(isStockPresent(stockList, code)) return;
+        if(!isValidStock(code)) return;
+
+        stockList = addStringtoArray(stockList, code);
+        util.setStocks(stockList);
+
+        replaceFragment(new StocksFragment());
+        showToast(code + " successfully added");
+    }
+
+    private String[] addStringtoArray(String [] stockList, String string){
+        int newLength = stockList == null ? 1 : stockList.length + 1;
+        String[] updatedStockList = new String[newLength];
+
+        if (stockList != null) {
+            System.arraycopy(stockList, 0, updatedStockList, 0, stockList.length);
+        }
+        updatedStockList[newLength - 1] = string;
+        return updatedStockList;
     }
 
     private void buttomns_actions(Dialog dialog){
@@ -106,58 +138,12 @@ public class HomeActivity extends AppCompatActivity {
         }
     }
 
-    private void addStock(String code){
-        SharedPreferencesUtil util = new SharedPreferencesUtil(this, "my_stocks");
-        String[] stockList = util.getStocks();
-        if(isStockPresent(stockList, code)) return;
-        if(!isValidStock(code)) return;
-        stockList = addStringtoArray(stockList, code);
-        util.setStocks(stockList);
-        replaceFragment(new StocksFragment());
-        showToast(code + " successfully added");
-    }
-
-    private void addPortfolio(String code, String qtty){
-        SharedPreferencesUtil util = new SharedPreferencesUtil(this, "my_portfolio");
-        StringFloatPair[] pairList = util.getPortfolio();
-        if(isStockPresent(pairList, code)) return;
-        if(!isValidStock(code)) return;
-        if(!isValidQtty(qtty)) return;
-        pairList = addPairToArray(pairList, code, Float.parseFloat(qtty));
-        util.setPortfolio(pairList);
-        replaceFragment(new PortfolioFragment());
-        showToast(code + " successfully added");
-    }
-
-    private StringFloatPair[] addPairToArray(StringFloatPair[] pairList, String code, float quantity) {
-        int newLength = pairList == null ? 1 : pairList.length + 1;
-        StringFloatPair[] updatedPairList = new StringFloatPair[newLength];
-
-        if (pairList != null) {
-            System.arraycopy(pairList, 0, updatedPairList, 0, pairList.length);
-        }
-
-        updatedPairList[newLength - 1] = new StringFloatPair(code, quantity);
-        return updatedPairList;
-    }
-
-    private String[] addStringtoArray(String [] stockList, String string){
-
-        int newLength = stockList == null ? 1 : stockList.length + 1;
-        String[] updatedStockList = new String[newLength];
-
-        if (stockList != null) {
-            System.arraycopy(stockList, 0, updatedStockList, 0, stockList.length);
-        }
-        updatedStockList[newLength - 1] = string;
-        return updatedStockList;
-    }
-
     public boolean isValidQtty(String qtty){
         if(qtty.length() > 9){
             showToast(qtty + " is too big!");
             return false;
         }
+
         try {
             Float.parseFloat(qtty);
             return true;
@@ -165,17 +151,6 @@ public class HomeActivity extends AppCompatActivity {
             showToast(qtty + " is not a valid number!");
             return false;
         }
-    }
-    public boolean isValidStock(String code){
-        if(code.length() > 6){
-            showToast(code + " is too long!");
-            return false;
-        }
-        if(true) {//TODO check if exists
-            return true;
-        }
-        showToast(code + " is not valid!");
-        return false;
     }
 
     public boolean isStockPresent(String array[], String code) {
@@ -203,6 +178,38 @@ public class HomeActivity extends AppCompatActivity {
                 return true;
             }
         }
+        return false;
+    }
+
+    private void replaceFragment(Fragment fragment){
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.frame_layout, fragment);
+        fragmentTransaction.commit();
+    }
+
+    private void showDialog(){
+        Dialog dialog = new Dialog(this);
+        if(currentFragment == R.id.stocks) dialog.setContentView(R.layout.add_stock);
+        else if(currentFragment == R.id.portfolio) dialog.setContentView(R.layout.add_portfolio);
+        buttomns_actions(dialog);
+        dialog.show();
+    }
+
+    private void showToast(String text){
+        Toast.makeText(HomeActivity.this, text, Toast.LENGTH_SHORT).show();
+    }
+
+    public boolean isValidStock(String code){
+        if(code.length() > 6){
+            showToast(code + " is too long!");
+            return false;
+        }
+
+        if(true) {//TODO check if exists
+            return true;
+        }
+        showToast(code + " is not valid!");
         return false;
     }
 }

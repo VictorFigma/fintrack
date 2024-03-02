@@ -2,6 +2,7 @@ package com.victorfigma.fintrack;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+
 import com.google.gson.Gson;
 
 public class SharedPreferencesUtil {
@@ -16,10 +17,12 @@ public class SharedPreferencesUtil {
         prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
     }
 
-    public void setStocks(String[] array) {
-        SharedPreferences.Editor editor = prefs.edit();
-        editor.putString(key + "_strings", new Gson().toJson(array));
-        editor.apply();
+    public StringFloatPair[] getPortfolio() {
+        String json = prefs.getString(key + "_pair_array", null);
+        if (json != null) {
+            return new Gson().fromJson(json, StringFloatPair[].class);
+        }
+        return null;
     }
 
     public String[] getStocks() {
@@ -36,12 +39,9 @@ public class SharedPreferencesUtil {
         editor.apply();
     }
 
-    public StringFloatPair[] getPortfolio() {
-        String json = prefs.getString(key + "_pair_array", null);
-        if (json != null) {
-            return new Gson().fromJson(json, StringFloatPair[].class);
-        }
-        return null;
+    public void setStocks(String[] array) {
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putString(key + "_strings", new Gson().toJson(array));
+        editor.apply();
     }
-
 }

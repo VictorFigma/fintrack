@@ -4,8 +4,8 @@ import java.util.Comparator;
 
 public class StringFloatPair {
 
-    public String code;
     public float qtty;
+    public String code;
 
     public StringFloatPair(String code) {
         this.code = code;
@@ -23,4 +23,3 @@ public class StringFloatPair {
         }
     }
 }
-

@@ -13,6 +13,7 @@ import androidx.annotation.Nullable;
 import java.util.ArrayList;
 
 public class PortfolioListAdapter extends ArrayAdapter<StringFloatPair> {
+
     public PortfolioListAdapter(@NonNull Context context, ArrayList<StringFloatPair> dataArrayList){
         super(context, R.layout.listed_item_portfolio, dataArrayList);
     }
@@ -28,7 +29,6 @@ public class PortfolioListAdapter extends ArrayAdapter<StringFloatPair> {
 
         TextView listStock = view.findViewById(R.id.portfolioStockCode);
         TextView listPrice = view.findViewById(R.id.portfolioStockPrice);
-
         listStock.setText(listData.code);
         listPrice.setText(String.format("%.2f", listData.qtty)); //TODO retrieve stock price and * listData.qtty
 
