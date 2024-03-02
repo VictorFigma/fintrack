@@ -16,9 +16,9 @@ public class StocksFragment extends Fragment {
 
     private ListView listView;
     private StocksListAdapter listAdapter;
-    private ArrayList<StringIntPair> dataArrayList = new ArrayList<>();
+    private ArrayList<StringFloatPair> dataArrayList = new ArrayList<>();
 
-    private StringIntPair listData;
+    private StringFloatPair listData;
 
 
     @Override
@@ -27,18 +27,14 @@ public class StocksFragment extends Fragment {
 
         SharedPreferencesUtil util = new SharedPreferencesUtil(getActivity(), "my_stocks");
 
-        /*String[] stockSymbols = {"AAPL", "GOOG", "TSLA"};
-        util.setStocks(stockSymbols);
-        */
-
         String[] retrievedStocks = util.getStocks();
 
         for (int i=0; i < retrievedStocks.length; i++){
-            listData = new StringIntPair(retrievedStocks[i]);
+            listData = new StringFloatPair(retrievedStocks[i]);
             dataArrayList.add(listData);
         }
 
-        Collections.sort(dataArrayList, new StringIntPair.StringIntPairComparator());
+        Collections.sort(dataArrayList, new StringFloatPair.StringFloatPairComparator());
 
         listView = (ListView) view.findViewById(R.id.stocksListView);
         listAdapter = new StocksListAdapter(getActivity(), dataArrayList);

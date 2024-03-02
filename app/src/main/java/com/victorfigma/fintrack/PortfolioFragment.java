@@ -14,7 +14,7 @@ public class PortfolioFragment extends Fragment {
 
     private ListView listView;
     private PortfolioListAdapter listAdapter;
-    private ArrayList<StringIntPair> dataArrayList= new ArrayList<>();
+    private ArrayList<StringFloatPair> dataArrayList= new ArrayList<>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -23,20 +23,14 @@ public class PortfolioFragment extends Fragment {
 
         SharedPreferencesUtil util = new SharedPreferencesUtil(getActivity(), "my_portfolio");
 
-        /*
-        StringIntPair pair1 = new StringIntPair("Item A", 10);
-        StringIntPair[] portfolio = new StringIntPair[]{pair1};
-        util.setPortfolio(portfolio);
-        */
-
-        StringIntPair[] retrievedPortfolio = util.getPortfolio();
+        StringFloatPair[] retrievedPortfolio = util.getPortfolio();
         if (retrievedPortfolio != null) {
-            for (StringIntPair pair : retrievedPortfolio) {
+            for (StringFloatPair pair : retrievedPortfolio) {
                 dataArrayList.add(pair);
             }
         }
 
-        Collections.sort(dataArrayList, new StringIntPair.StringIntPairComparator());
+        Collections.sort(dataArrayList, new StringFloatPair.StringFloatPairComparator());
 
         listView = (ListView) view.findViewById(R.id.portfolioListView);
         listAdapter = new PortfolioListAdapter(getActivity(), dataArrayList);
@@ -44,5 +38,7 @@ public class PortfolioFragment extends Fragment {
 
         return view;
     }
+
+
 
 }

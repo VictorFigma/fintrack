@@ -30,16 +30,16 @@ public class SharedPreferencesUtil {
         return null;
     }
 
-    public void setPortfolio(StringIntPair[] pairs) {
+    public void setPortfolio(StringFloatPair[] pairs) {
         SharedPreferences.Editor editor = prefs.edit();
         editor.putString(key + "_pair_array", new Gson().toJson(pairs));
         editor.apply();
     }
 
-    public StringIntPair[] getPortfolio() {
+    public StringFloatPair[] getPortfolio() {
         String json = prefs.getString(key + "_pair_array", null);
         if (json != null) {
-            return new Gson().fromJson(json, StringIntPair[].class);
+            return new Gson().fromJson(json, StringFloatPair[].class);
         }
         return null;
     }

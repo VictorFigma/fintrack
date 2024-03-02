@@ -12,15 +12,15 @@ import androidx.annotation.Nullable;
 
 import java.util.ArrayList;
 
-public class StocksListAdapter extends ArrayAdapter<StringIntPair> {
-    public StocksListAdapter(@NonNull Context context, ArrayList<StringIntPair> dataArrayList){
+public class StocksListAdapter extends ArrayAdapter<StringFloatPair> {
+    public StocksListAdapter(@NonNull Context context, ArrayList<StringFloatPair> dataArrayList){
         super(context, R.layout.listed_item_stocks, dataArrayList);
     }
 
     @NonNull
     @Override
     public View getView(int position, @Nullable View view, ViewGroup parent){
-        StringIntPair listData = getItem(position);
+        StringFloatPair listData = getItem(position);
 
         if(view == null){
             view = LayoutInflater.from(getContext()).inflate(R.layout.listed_item_stocks, parent, false);
