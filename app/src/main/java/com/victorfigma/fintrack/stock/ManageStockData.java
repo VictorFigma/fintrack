@@ -1,5 +1,7 @@
 package com.victorfigma.fintrack.stock;
 
+import static java.util.Arrays.stream;
+
 import android.content.Context;
 import android.widget.Toast;
 
@@ -30,6 +32,21 @@ public class ManageStockData {
         }
         updatedStockList[newLength - 1] = string;
         return updatedStockList;
+    }
+
+    public static void removeStock(Context context, String code){
+        SharedPreferencesUtil util = new SharedPreferencesUtil(context, "my_stocks");
+        String[] stockList = util.getStocks();
+
+        stockList = deleteStockFromArray(stockList, code);
+        util.setStocks(stockList);
+
+        showToast(context, code + " successfully deleted");
+    }
+
+    public static String [] deleteStockFromArray(String [] stockList, String code){
+        return stockList == null || stockList.length == 0
+                ? stockList : stream(stockList).filter(s -> !s.equals(code)).toArray(String[]::new);
     }
 
     public static boolean isStockPresent(Context context, String array[], String code) {

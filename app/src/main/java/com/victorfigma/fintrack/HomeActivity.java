@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 import com.victorfigma.fintrack.databinding.ActivityHomeBinding;
 import com.victorfigma.fintrack.portfolio.ManagePortfolioData;
 import com.victorfigma.fintrack.portfolio.PortfolioFragment;
@@ -90,7 +91,7 @@ public class HomeActivity extends AppCompatActivity {
         }
     }
 
-    private void replaceFragment(Fragment fragment){
+    public void replaceFragment(Fragment fragment){
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.frame_layout, fragment);

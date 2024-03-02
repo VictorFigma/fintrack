@@ -16,6 +16,7 @@ import com.victorfigma.fintrack.utils.StringFloatPair;
 import java.util.ArrayList;
 
 public class StocksListAdapter extends ArrayAdapter<StringFloatPair> {
+
     public StocksListAdapter(@NonNull Context context, ArrayList<StringFloatPair> dataArrayList){
         super(context, R.layout.listed_item_stocks, dataArrayList);
     }

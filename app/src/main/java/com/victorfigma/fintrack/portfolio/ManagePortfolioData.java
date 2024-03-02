@@ -1,10 +1,14 @@
 package com.victorfigma.fintrack.portfolio;
 
+import static java.util.Arrays.stream;
+
 import android.content.Context;
 import android.widget.Toast;
 
 import com.victorfigma.fintrack.utils.SharedPreferencesUtil;
 import com.victorfigma.fintrack.utils.StringFloatPair;
+
+import java.util.Arrays;
 
 public class ManagePortfolioData {
 
@@ -33,6 +37,27 @@ public class ManagePortfolioData {
         showToast(context, code + " successfully added");
         showToast(context,"TODO Validation" + code + qtty); //TODO
     }
+
+    public static void removePortfolio(Context context, StringFloatPair code){
+        SharedPreferencesUtil util = new SharedPreferencesUtil(context, "my_portfolio");
+        StringFloatPair[] pairList = util.getPortfolio();
+
+        pairList = deleteStringFloatPairFromArray(pairList, code);
+        util.setPortfolio(pairList);
+
+        showToast(context, code + " successfully deleted");
+    }
+
+    public static StringFloatPair[] deleteStringFloatPairFromArray(StringFloatPair[] portfolioList, StringFloatPair portfolioItem) {
+        if (portfolioList == null || portfolioList.length == 0) {
+            return portfolioList;
+        }
+
+        return Arrays.stream(portfolioList)
+                .filter(item -> !item.equals(portfolioItem))
+                .toArray(StringFloatPair[]::new);
+    }
+
 
     public static boolean isStockPresent(Context context, StringFloatPair array[], String code) {
         if (array == null) {
