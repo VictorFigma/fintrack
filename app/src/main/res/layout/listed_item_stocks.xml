@@ -9,7 +9,8 @@
     app:cardCornerRadius="20dp"
     app:cardElevation="8dp"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    style="@style/CardBackground">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -22,7 +23,7 @@
             android:layout_marginLeft="14dp"
             android:gravity="center_vertical"
             android:text="ABCD56"
-            android:textColor="@color/black"
+            style="@style/TextColor"
             android:textSize="28sp" />
 
         <TextView
@@ -33,7 +34,7 @@
             android:layout_toEndOf="@id/stocksStockCode"
             android:gravity="center_vertical"
             android:text="100.000,57$"
-            android:textColor="@color/black"
+            style="@style/TextColor"
             android:textDirection="rtl"
             android:textSize="26sp" />
 

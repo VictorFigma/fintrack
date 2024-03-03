@@ -6,7 +6,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
+    style="@style/ScreenBackground"
     tools:context=".HomeActivity">
 
     <FrameLayout
@@ -19,7 +19,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
-        android:background="@android:color/transparent"
+        style="@style/ScreenBackground"
         app:fabCradleRoundedCornerRadius="30dp">
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
@@ -29,7 +29,7 @@
             android:layout_height="wrap_content"
             android:background="@android:color/transparent"
             app:labelVisibilityMode="labeled"
-            app:menu="@menu/bottom_navbar" />
+            app:menu="@menu/bottom_navbar"/>
 
     </com.google.android.material.bottomappbar.BottomAppBar>
 
@@ -37,12 +37,11 @@
         android:id="@+id/addButtom"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:backgroundTint="@color/white"
         android:src="@drawable/baseline_add_24"
+        style="@style/AddFloatingButton"
         app:layout_anchor="@id/bottomNavbar"
         app:maxImageSize="40dp"
-        android:layout_marginBottom="84dp"
-        android:tint="@color/black">
+        android:layout_marginBottom="84dp">
 
     </com.google.android.material.floatingactionbutton.FloatingActionButton>
 
