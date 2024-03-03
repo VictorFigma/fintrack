@@ -34,16 +34,6 @@ public class ManageStockData {
         return updatedStockList;
     }
 
-    public static void removeStock(Context context, String code){
-        SharedPreferencesUtil util = new SharedPreferencesUtil(context, "my_stocks");
-        String[] stockList = util.getStocks();
-
-        stockList = deleteStockFromArray(stockList, code);
-        util.setStocks(stockList);
-
-        showToast(context, code + " successfully deleted");
-    }
-
     public static String [] deleteStockFromArray(String [] stockList, String code){
         return stockList == null || stockList.length == 0
                 ? stockList : stream(stockList).filter(s -> !s.equals(code)).toArray(String[]::new);
@@ -74,6 +64,16 @@ public class ManageStockData {
         }
         showToast(context, code + " is not valid!");
         return false;
+    }
+
+    public static void removeStock(Context context, String code){
+        SharedPreferencesUtil util = new SharedPreferencesUtil(context, "my_stocks");
+        String[] stockList = util.getStocks();
+
+        stockList = deleteStockFromArray(stockList, code);
+        util.setStocks(stockList);
+
+        showToast(context, code + " successfully deleted");
     }
 
     private static void showToast(Context context, String text){

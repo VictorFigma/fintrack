@@ -1,7 +1,5 @@
 package com.victorfigma.fintrack.portfolio;
 
-import static java.util.Arrays.stream;
-
 import android.content.Context;
 import android.widget.Toast;
 
@@ -38,26 +36,28 @@ public class ManagePortfolioData {
         showToast(context,"TODO Validation" + code + qtty); //TODO
     }
 
-    public static void removePortfolio(Context context, StringFloatPair code){
-        SharedPreferencesUtil util = new SharedPreferencesUtil(context, "my_portfolio");
-        StringFloatPair[] pairList = util.getPortfolio();
-
-        pairList = deleteStringFloatPairFromArray(pairList, code);
-        util.setPortfolio(pairList);
-
-        showToast(context, code + " successfully deleted");
-    }
-
-    public static StringFloatPair[] deleteStringFloatPairFromArray(StringFloatPair[] portfolioList, StringFloatPair portfolioItem) {
+    public static StringFloatPair[] deleteStringFloatPairFromArray(StringFloatPair[] portfolioList, String code) {
         if (portfolioList == null || portfolioList.length == 0) {
             return portfolioList;
         }
 
         return Arrays.stream(portfolioList)
-                .filter(item -> !item.equals(portfolioItem))
+                .filter(item -> !item.code.equals(code))
                 .toArray(StringFloatPair[]::new);
     }
 
+    public static void editPortfolio(Context context, String code, String qtty){
+        SharedPreferencesUtil util = new SharedPreferencesUtil(context, "my_portfolio");
+        StringFloatPair[] pairList = util.getPortfolio();
+
+        if(!isValidQtty(context, qtty)) return;
+
+        StringFloatPair[] pairList_temp = deleteStringFloatPairFromArray(pairList, code);
+        StringFloatPair[] pairList_temp2 = addPairToArray(pairList_temp, code, Float.parseFloat(qtty));
+        util.setPortfolio(pairList_temp2);
+
+        showToast(context, code + " successfully edited");
+    }
 
     public static boolean isStockPresent(Context context, StringFloatPair array[], String code) {
         if (array == null) {
@@ -99,6 +99,16 @@ public class ManagePortfolioData {
         }
         showToast(context, code + " is not valid!");
         return false;
+    }
+
+    public static void removePortfolio(Context context, String code){
+        SharedPreferencesUtil util = new SharedPreferencesUtil(context, "my_portfolio");
+        StringFloatPair[] pairList = util.getPortfolio();
+
+        pairList = deleteStringFloatPairFromArray(pairList, code);
+        util.setPortfolio(pairList);
+
+        showToast(context, code + " successfully deleted");
     }
 
     private static void showToast(Context context, String text){
