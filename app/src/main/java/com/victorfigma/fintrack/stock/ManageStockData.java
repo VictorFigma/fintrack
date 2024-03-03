@@ -1,5 +1,6 @@
 package com.victorfigma.fintrack.stock;
 
+import static com.victorfigma.fintrack.MainActivity.pythonGetPriceScrip;
 import static java.util.Arrays.stream;
 
 import android.content.Context;
@@ -59,11 +60,13 @@ public class ManageStockData {
             return false;
         }
 
-        if(true) {//TODO check if exists
-            return true;
+        Float price = Float.parseFloat(pythonGetPriceScrip.getPrice(code));
+        if(price == -1) {
+            showToast(context, code + " symbol not found!");
+            return false;
         }
-        showToast(context, code + " is not valid!");
-        return false;
+
+        return true;
     }
 
     public static void removeStock(Context context, String code){
