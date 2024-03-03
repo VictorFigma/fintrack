@@ -1,5 +1,7 @@
 package com.victorfigma.fintrack.stock;
 
+import static com.victorfigma.fintrack.MainActivity.pythonGetPriceScrip;
+
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,7 +22,6 @@ public class StocksFragment extends Fragment {
     private ArrayList<StringFloatPair> dataArrayList = new ArrayList<>();
     private ListView listView;
     private StocksListAdapter listAdapter;
-    private StringFloatPair listData;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -29,13 +30,15 @@ public class StocksFragment extends Fragment {
         SharedPreferencesUtil util = new SharedPreferencesUtil(getActivity(), "my_stocks");
 
         String[] retrievedStocks = util.getStocks();
+
         for (int i = 0; i < retrievedStocks.length; i++) {
-            listData = new StringFloatPair(retrievedStocks[i]);
-            dataArrayList.add(listData);
+            String code = retrievedStocks[i];
+            Float qtty = Float.parseFloat(pythonGetPriceScrip.getPrice(code));
+            dataArrayList.add(new StringFloatPair(code, qtty));
         }
         Collections.sort(dataArrayList, new StringFloatPair.StringFloatPairComparator());
 
-        listView = (ListView) view.findViewById(R.id.stocksListView);
+        listView = view.findViewById(R.id.stocksListView);
         listAdapter = new StocksListAdapter(getActivity(), dataArrayList);
         listView.setAdapter(listAdapter);
 

@@ -1,5 +1,7 @@
 package com.victorfigma.fintrack.portfolio;
 
+import static com.victorfigma.fintrack.MainActivity.pythonGetPriceScrip;
+
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,7 +25,6 @@ public class PortfolioFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
         View view = inflater.inflate(R.layout.fragment_portfolio, container, false);
 
         SharedPreferencesUtil util = new SharedPreferencesUtil(getActivity(), "my_portfolio");
@@ -31,12 +32,13 @@ public class PortfolioFragment extends Fragment {
         StringFloatPair[] retrievedPortfolio = util.getPortfolio();
         if (retrievedPortfolio != null) {
             for (StringFloatPair pair : retrievedPortfolio) {
-                dataArrayList.add(pair);
+                Float qtty = pair.qtty * Float.parseFloat(pythonGetPriceScrip.getPrice(pair.code));
+                dataArrayList.add(new StringFloatPair(pair.code, qtty));
             }
         }
         Collections.sort(dataArrayList, new StringFloatPair.StringFloatPairComparator());
 
-        listView = (ListView) view.findViewById(R.id.portfolioListView);
+        listView = view.findViewById(R.id.portfolioListView);
         listAdapter = new PortfolioListAdapter(getActivity(), dataArrayList);
         listView.setAdapter(listAdapter);
 

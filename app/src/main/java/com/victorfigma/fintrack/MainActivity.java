@@ -6,13 +6,20 @@ import android.os.Handler;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.victorfigma.fintrack.utils.GetPrice;
+
 public class MainActivity extends AppCompatActivity {
 
     public static int SPLASH_TIMER = 1303;
+
+    public static GetPrice pythonGetPriceScrip;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        pythonGetPriceScrip = new GetPrice(this);
 
         new Handler().postDelayed(new Runnable() {
             @Override

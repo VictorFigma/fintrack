@@ -89,7 +89,7 @@ public class ManagePortfolioData {
     }
 
     public static boolean isValidStock(Context context, String code){
-        if(code.length() > 6){
+        if(code.length() > 9){
             showToast(context, code + " is too long!");
             return false;
         }

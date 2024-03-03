@@ -1,5 +1,7 @@
 package com.victorfigma.fintrack.portfolio;
 
+import static com.victorfigma.fintrack.MainActivity.pythonGetPriceScrip;
+
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -42,7 +44,7 @@ public class PortfolioListAdapter extends ArrayAdapter<StringFloatPair> {
         TextView listStock = view.findViewById(R.id.portfolioStockCode);
         TextView listPrice = view.findViewById(R.id.portfolioStockPrice);
         listStock.setText(listData.code);
-        listPrice.setText(String.format("%.2f", listData.qtty)); //TODO retrieve stock price and * listData.qtty
+        listPrice.setText(String.format("%.2f", listData.qtty));
 
         ShapeableImageView deleteButton = view.findViewById(R.id.deleteItem);
         ShapeableImageView editButton = view.findViewById(R.id.editItem);
@@ -85,7 +87,8 @@ public class PortfolioListAdapter extends ArrayAdapter<StringFloatPair> {
 
     private void showEditDialog(final StringFloatPair selectedItem) {
         EditText inputQtty = new EditText(getContext());
-        inputQtty.setHint(String.valueOf(selectedItem.qtty));
+        Float currentPrice = Float.parseFloat(pythonGetPriceScrip.getPrice(selectedItem.code));
+        inputQtty.setHint(String.valueOf(selectedItem.qtty/currentPrice));
 
         mEditDialogBuilder.setTitle("Input the new quantity for " + selectedItem.code)
                 .setView(inputQtty)
@@ -94,7 +97,7 @@ public class PortfolioListAdapter extends ArrayAdapter<StringFloatPair> {
                     public void onClick(DialogInterface dialog, int which) {
                         String newQuantity = inputQtty.getText().toString();
                         ManagePortfolioData.editPortfolio(getContext(), selectedItem.code, newQuantity);
-                        selectedItem.qtty = Float.parseFloat(newQuantity);
+                        selectedItem.qtty = Float.parseFloat(newQuantity) * currentPrice;
                         notifyDataSetChanged();
                     }
                 })
