@@ -31,7 +31,7 @@
                 android:paddingEnd="12dp"
                 android:ems="10"
                 android:inputType="text"
-                android:text="Input stock code"/>
+                android:hint="Input stock code"/>
 
             <EditText
                 android:id="@+id/addQtty"
@@ -43,7 +43,7 @@
                 android:paddingEnd="12dp"
                 android:ems="10"
                 android:inputType="text"
-                android:text="Input qtty of stock"/>
+                android:hint="Input qtty of stock"/>
 
 
             <LinearLayout
