@@ -21,7 +21,6 @@ public class ManageStockData {
         util.setStocks(stockList);
 
         showToast(context, code + " successfully added");
-        showToast(context, "TODO Validation" + code); //TODO
     }
 
     public static String[] addStringtoArray(String [] stockList, String string){

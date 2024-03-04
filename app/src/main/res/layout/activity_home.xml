@@ -12,14 +12,23 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/frame_layout"/>
+        android:id="@+id/frame_layout" />
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/topAppBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/TopBarBackground"
+        app:logo="@drawable/logo"
+        app:title=" "
+        android:elevation="3dp"/>
 
     <com.google.android.material.bottomappbar.BottomAppBar
         android:id="@+id/bottomNavbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
-        style="@style/ScreenBackground"
+        style="@style/BottomBarBackground"
         app:fabCradleRoundedCornerRadius="30dp">
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
@@ -37,13 +46,13 @@
         android:id="@+id/addButtom"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="30dp"
         android:src="@drawable/baseline_add_24"
         app:borderWidth="1dp"
+        app:backgroundTint="@color/black"
         style="@style/AddFloatingButton"
         app:layout_anchor="@id/bottomNavbar"
-        app:maxImageSize="40dp"
-        android:layout_marginBottom="84dp">
-
+        app:maxImageSize="40dp">
     </com.google.android.material.floatingactionbutton.FloatingActionButton>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

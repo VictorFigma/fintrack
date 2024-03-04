@@ -12,9 +12,9 @@
         android:layout_height="match_parent"
         android:id="@+id/stocksListView"
         android:scrollbars="vertical"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="60dp"
         android:layout_marginBottom="56dp"
-        android:layout_marginStart="12dp"
+        android:layout_marginStart="13dp"
         tools:listitem="@layout/listed_item_stocks"
         android:divider="@android:color/transparent"
         android:dividerHeight="10sp"/>

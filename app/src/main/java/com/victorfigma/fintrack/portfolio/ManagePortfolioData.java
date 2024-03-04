@@ -35,7 +35,6 @@ public class ManagePortfolioData {
         util.setPortfolio(pairList);
 
         showToast(context, code + " successfully added");
-        showToast(context,"TODO Validation" + code + qtty); //TODO
     }
 
     public static StringFloatPair[] deleteStringFloatPairFromArray(StringFloatPair[] portfolioList, String code) {

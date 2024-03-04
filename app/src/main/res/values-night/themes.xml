@@ -7,6 +7,8 @@
 
     <style name="ScreenBackground"><item name="android:background">@color/dark_grey</item></style>
     <style name="CardBackground"><item name="cardBackgroundColor">@color/white</item></style>
+    <style name="TopBarBackground"><item name="android:background">@color/dark_green</item></style>
+    <style name="BottomBarBackground"><item name="backgroundTint">@color/dark_green</item></style>
     <style name="TextColor"><item name="android:textColor">@color/black</item></style>
     <style name="TextColor2"><item name="android:textColor">@color/light_white</item></style>
     <style name="AddFloatingButton"><item name="android:backgroundTint">@color/white</item></style>
