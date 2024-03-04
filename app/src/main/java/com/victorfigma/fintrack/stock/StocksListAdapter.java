@@ -39,7 +39,8 @@ public class StocksListAdapter extends ArrayAdapter<StringFloatPair> {
         TextView listPrice = view.findViewById(R.id.stocksStockPrice);
 
         listStock.setText(listData.code);
-        listPrice.setText(String.valueOf(listData.qtty));
+        String qtty = String.valueOf(listData.qtty) + "$";
+        listPrice.setText(qtty);
 
         View deleteButton = view.findViewById(R.id.deleteItem);
         deleteButton.setOnClickListener(new View.OnClickListener() {

@@ -38,6 +38,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/baseline_add_24"
+        app:borderWidth="1dp"
         style="@style/AddFloatingButton"
         app:layout_anchor="@id/bottomNavbar"
         app:maxImageSize="40dp"

@@ -43,8 +43,9 @@ public class PortfolioListAdapter extends ArrayAdapter<StringFloatPair> {
 
         TextView listStock = view.findViewById(R.id.portfolioStockCode);
         TextView listPrice = view.findViewById(R.id.portfolioStockPrice);
+        String qtty = String.format("%.2f", listData.qtty) + "$";
         listStock.setText(listData.code);
-        listPrice.setText(String.format("%.2f", listData.qtty));
+        listPrice.setText(qtty);
 
         ShapeableImageView deleteButton = view.findViewById(R.id.deleteItem);
         ShapeableImageView editButton = view.findViewById(R.id.editItem);
