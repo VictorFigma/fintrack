@@ -97,9 +97,10 @@ public class PortfolioListAdapter extends ArrayAdapter<StringFloatPair> {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         String newQuantity = inputQtty.getText().toString();
-                        ManagePortfolioData.editPortfolio(getContext(), selectedItem.code, newQuantity);
-                        selectedItem.qtty = Float.parseFloat(newQuantity) * currentPrice;
-                        notifyDataSetChanged();
+                        if(ManagePortfolioData.editPortfolio(getContext(), selectedItem.code, newQuantity)){
+                            selectedItem.qtty = Float.parseFloat(newQuantity) * currentPrice;
+                            notifyDataSetChanged();
+                        };
                     }
                 })
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {

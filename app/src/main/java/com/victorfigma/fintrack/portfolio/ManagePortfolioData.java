@@ -48,17 +48,18 @@ public class ManagePortfolioData {
                 .toArray(StringFloatPair[]::new);
     }
 
-    public static void editPortfolio(Context context, String code, String qtty){
+    public static boolean editPortfolio(Context context, String code, String qtty){
         SharedPreferencesUtil util = new SharedPreferencesUtil(context, "my_portfolio");
         StringFloatPair[] pairList = util.getPortfolio();
 
-        if(!isValidQtty(context, qtty)) return;
+        if(!isValidQtty(context, qtty)) return false;
 
         StringFloatPair[] pairList_temp = deleteStringFloatPairFromArray(pairList, code);
         StringFloatPair[] pairList_temp2 = addPairToArray(pairList_temp, code, Float.parseFloat(qtty));
         util.setPortfolio(pairList_temp2);
 
         showToast(context, code + " successfully edited");
+        return true;
     }
 
     public static boolean isStockPresent(Context context, StringFloatPair array[], String code) {
