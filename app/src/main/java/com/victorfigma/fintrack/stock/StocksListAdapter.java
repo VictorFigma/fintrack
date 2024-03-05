@@ -19,29 +19,39 @@ import java.util.ArrayList;
 
 public class StocksListAdapter extends ArrayAdapter<StringFloatPair> {
 
-    private AlertDialog.Builder mDeleteDialogBuilder;
+    private ArrayList<StringFloatPair> stockItemsArray;
 
     public StocksListAdapter(@NonNull Context context, ArrayList<StringFloatPair> dataArrayList){
         super(context, R.layout.listed_item_stocks, dataArrayList);
-        mDeleteDialogBuilder = new AlertDialog.Builder(getContext());
+        this.stockItemsArray = dataArrayList;
     }
 
     @NonNull
     @Override
     public View getView(int position, @Nullable View view, ViewGroup parent){
-        StringFloatPair listData = getItem(position);
-
         if(view == null){
             view = LayoutInflater.from(getContext()).inflate(R.layout.listed_item_stocks, parent, false);
         }
 
+        configStockItem(position, view);
+
+        return view;
+    }
+
+    private void configStockItem(int position, View view){
         TextView listStock = view.findViewById(R.id.stocksStockCode);
         TextView listPrice = view.findViewById(R.id.stocksStockPrice);
 
+        StringFloatPair listData = getItem(position);
+
         listStock.setText(listData.code);
-        String qtty = String.valueOf(listData.qtty) + "$";
+        String qtty = listData.qtty + "$";
         listPrice.setText(qtty);
 
+        setDeleteListener(view, listData);
+    }
+
+    private void setDeleteListener(View view, StringFloatPair listData){
         View deleteButton = view.findViewById(R.id.deleteItem);
         deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -50,10 +60,10 @@ public class StocksListAdapter extends ArrayAdapter<StringFloatPair> {
             }
         });
 
-        return view;
     }
 
     private void showDeleteDialog(final StringFloatPair selectedItem) {
+        AlertDialog.Builder mDeleteDialogBuilder = new AlertDialog.Builder(getContext());
         mDeleteDialogBuilder.setTitle("Are you sure you want to delete \"" + selectedItem.code + "\" ?")
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
@@ -70,5 +80,11 @@ public class StocksListAdapter extends ArrayAdapter<StringFloatPair> {
                     }
                 })
                 .create().show();
+    }
+
+    public void updateStockList(ArrayList<StringFloatPair> updatedArray){
+        stockItemsArray.clear();
+        stockItemsArray.addAll(updatedArray);
+        notifyDataSetChanged();
     }
 }

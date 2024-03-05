@@ -3,6 +3,7 @@ package com.victorfigma.fintrack;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
+import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -28,11 +29,14 @@ import com.victorfigma.fintrack.stock.StocksFragment;
 
 public class HomeActivity extends AppCompatActivity {
 
-    private int currentFragment;
+    private int currentFragmentId;
+    private Fragment currentFragment;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         loadHomeLayout();
         loadTheme();
     }
@@ -49,7 +53,8 @@ public class HomeActivity extends AppCompatActivity {
             switchTheme();
             return true;
         }else if (item.getItemId() == R.id.searchBar){ //Search top_navbar
-            //TODO
+            setListenerSearch(item);
+            return true;
         }
 
         return super.onOptionsItemSelected(item);
@@ -59,19 +64,25 @@ public class HomeActivity extends AppCompatActivity {
      * Loads the home layout (bottom_navbar + top_navabar + "add button" listeners).
      */
     private void loadHomeLayout(){
-        ActivityHomeBinding binding;
-        binding = ActivityHomeBinding.inflate(getLayoutInflater());
+        ActivityHomeBinding binding = ActivityHomeBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        replaceFragment(new StocksFragment());
-        currentFragment = R.id.stocks;
+        currentFragment = new StocksFragment();
+        replaceFragment(currentFragment);
+        currentFragmentId = R.id.stocks;
         binding.bottomNavbarView.setBackground(null);
         binding.bottomNavbarView.setOnItemSelectedListener(item -> {
+
             //Can't do a switch since constants are not final in ADT 14
-            int id = item.getItemId();
-            if(id == R.id.stocks) replaceFragment(new StocksFragment());
-            else if(id == R.id.portfolio) replaceFragment(new PortfolioFragment());
-            currentFragment = id;
+            currentFragmentId = item.getItemId();
+            if(currentFragmentId == R.id.stocks){
+                currentFragment = new StocksFragment();
+                replaceFragment(currentFragment);
+            }
+            else if(currentFragmentId == R.id.portfolio){
+                currentFragment =new PortfolioFragment();
+                replaceFragment(currentFragment);
+            }
 
             return true;
         });
@@ -121,8 +132,8 @@ public class HomeActivity extends AppCompatActivity {
         btnShowDialog.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (currentFragment == R.id.stocks) dialog.setContentView(R.layout.add_stock);
-                else if (currentFragment == R.id.portfolio) dialog.setContentView(R.layout.add_portfolio);
+                if (currentFragmentId == R.id.stocks) dialog.setContentView(R.layout.add_stock);
+                else if (currentFragmentId == R.id.portfolio) dialog.setContentView(R.layout.add_portfolio);
                 setAddButtonListeners(dialog);
                 dialog.show();
             }
@@ -138,9 +149,9 @@ public class HomeActivity extends AppCompatActivity {
             setListenerCancel(dialog);
 
             EditText codeInput = dialog.findViewById(R.id.addCode);
-            if (currentFragment == R.id.stocks) {
+            if (currentFragmentId == R.id.stocks) {
                 setListenerAddStock(dialog, codeInput);
-            }else if (currentFragment == R.id.portfolio){
+            }else if (currentFragmentId == R.id.portfolio){
                 setListenerAddPortfolio(dialog, codeInput);
             }
     }
@@ -174,7 +185,8 @@ public class HomeActivity extends AppCompatActivity {
                 String code = codeInput.getText().toString().toUpperCase();
                 ManageStockData.addStock(HomeActivity.this, code);
                 dialog.dismiss();
-                replaceFragment(new StocksFragment());
+                currentFragment = new StocksFragment();
+                replaceFragment(currentFragment);
             }
         });
     }
@@ -196,6 +208,26 @@ public class HomeActivity extends AppCompatActivity {
                 ManagePortfolioData.addPortfolio(HomeActivity.this, code, qtty);
                 dialog.dismiss();
                 replaceFragment(new PortfolioFragment());
+            }
+        });
+    }
+
+    private void setListenerSearch(MenuItem item){
+        SearchView searchView = (SearchView) item.getActionView();
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) { return false; }
+
+            @Override
+            public boolean onQueryTextChange(String query) {
+                if(currentFragmentId == R.id.stocks){
+                    StocksFragment frag = (StocksFragment) currentFragment;
+                    frag.updateDisplayedStocks(query);
+                } else if (currentFragmentId == R.id.portfolio) {
+                    PortfolioFragment frag = (PortfolioFragment) currentFragment;
+                    //TODO
+                }
+                return false;
             }
         });
     }

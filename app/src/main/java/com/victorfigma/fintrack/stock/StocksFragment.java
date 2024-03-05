@@ -19,13 +19,18 @@ import java.util.Collections;
 
 public class StocksFragment extends Fragment {
 
-    private ArrayList<StringFloatPair> dataArrayList = new ArrayList<>();
+    private ArrayList<StringFloatPair> stockList;
     private ListView listView;
-    private StocksListAdapter listAdapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_stocks, container, false);
+        setAdapter(view);
+        return view;
+    }
+
+    private ArrayList<StringFloatPair> retrieveStoredStocks(){
+        ArrayList<StringFloatPair> dataArrayList = new ArrayList<>();
 
         SharedPreferencesUtil util = new SharedPreferencesUtil(getActivity(), "my_stocks");
 
@@ -38,10 +43,28 @@ public class StocksFragment extends Fragment {
         }
         Collections.sort(dataArrayList, new StringFloatPair.StringFloatPairComparator());
 
-        listView = view.findViewById(R.id.stocksListView);
-        listAdapter = new StocksListAdapter(getActivity(), dataArrayList);
-        listView.setAdapter(listAdapter);
+        return dataArrayList;
+    }
 
-        return view;
+    private void setAdapter(View view){
+        this.stockList = retrieveStoredStocks();
+        ArrayList<StringFloatPair> stockListCopy = new ArrayList<>(stockList); //Stocklist object can't be linked to the adapter because the search filter will edit it
+        StocksListAdapter listAdapter = new StocksListAdapter(getActivity(), stockListCopy);
+        this.listView = view.findViewById(R.id.stocksListView);
+        listView.setAdapter(listAdapter);
+    }
+
+    public void updateDisplayedStocks(String textFilter){
+        ArrayList<StringFloatPair> results = new ArrayList<>();
+        if(textFilter.isEmpty()){
+            results = stockList;
+        }else{
+            for (StringFloatPair pair: stockList){
+                if(pair.code.contains(textFilter.toUpperCase().trim())){
+                    results.add(pair);
+                }
+            }
+       }
+        ((StocksListAdapter) listView.getAdapter()).updateStockList(results);
     }
 }
