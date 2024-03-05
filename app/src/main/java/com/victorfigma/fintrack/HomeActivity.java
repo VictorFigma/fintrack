@@ -2,21 +2,21 @@ package com.victorfigma.fintrack;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.SearchView;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-
 import android.app.Dialog;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -28,9 +28,9 @@ import com.victorfigma.fintrack.stock.StocksFragment;
 
 public class HomeActivity extends AppCompatActivity {
 
+    private int currentFragment;
     private ActivityHomeBinding binding;
     private FloatingActionButton btnShowDialog;
-    private int currentFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +63,8 @@ public class HomeActivity extends AppCompatActivity {
 
             return true;
         });
+
+        loadTheme();
     }
 
     @Override
@@ -73,11 +75,11 @@ public class HomeActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        int id = item.getItemId();
-        if(id == androidx.core.R.id.icon_group){
-            Toast.makeText(this, "new", Toast.LENGTH_SHORT).show();
+        if (item.getItemId() == R.id.swapTheme) {
+            switchTheme();
+            return true;
         }
-        return true;
+        return super.onOptionsItemSelected(item);
     }
 
     private void buttomns_actions(Dialog dialog){
@@ -117,7 +119,19 @@ public class HomeActivity extends AppCompatActivity {
         }
     }
 
-    public void replaceFragment(Fragment fragment){
+    private void loadTheme(){
+        SharedPreferences sharedPreferences = getSharedPreferences("THEME_MODE", Context.MODE_PRIVATE);
+        boolean phoneMode = AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES;
+        boolean darkMode = sharedPreferences.getBoolean("nightMode", phoneMode);
+
+        if(darkMode){
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+        }else{
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+        }
+    }
+
+    private void replaceFragment(Fragment fragment){
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.frame_layout, fragment);
@@ -130,5 +144,21 @@ public class HomeActivity extends AppCompatActivity {
         else if(currentFragment == R.id.portfolio) dialog.setContentView(R.layout.add_portfolio);
         buttomns_actions(dialog);
         dialog.show();
+    }
+
+    private void switchTheme() {
+        SharedPreferences sharedPreferences = getSharedPreferences("THEME_MODE", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor;
+        boolean darkMode = AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES;
+        if(darkMode){
+            editor = sharedPreferences.edit();
+            editor.putBoolean("nightMode", false);
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+        }else{
+            editor = sharedPreferences.edit();
+            editor.putBoolean("nightMode", true);
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+        }
+        editor.apply();
     }
 }
