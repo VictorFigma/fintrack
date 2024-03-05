@@ -18,14 +18,19 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 public class PortfolioFragment extends Fragment {
-
-    private ArrayList<StringFloatPair> dataArrayList= new ArrayList<>();
+    private ArrayList<StringFloatPair> portfolioList;
     private ListView listView;
     private PortfolioListAdapter listAdapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_portfolio, container, false);
+        setAdapter(view);
+        return view;
+    }
+
+    private ArrayList<StringFloatPair> retrieveStoredPortfolio(){
+        ArrayList<StringFloatPair> dataArrayList = new ArrayList<>();
 
         SharedPreferencesUtil util = new SharedPreferencesUtil(getActivity(), "my_portfolio");
 
@@ -38,10 +43,29 @@ public class PortfolioFragment extends Fragment {
         }
         Collections.sort(dataArrayList, new StringFloatPair.StringFloatPairComparator());
 
-        listView = view.findViewById(R.id.portfolioListView);
-        listAdapter = new PortfolioListAdapter(getActivity(), dataArrayList);
-        listView.setAdapter(listAdapter);
+        return dataArrayList;
+    }
 
-        return view;
+    private void setAdapter(View view){
+        this.portfolioList = retrieveStoredPortfolio();
+        ArrayList<StringFloatPair> portfolioListCopy = new ArrayList<>(portfolioList); //Stocklist object can't be linked to the adapter because the search filter will edit it
+
+        PortfolioListAdapter listAdapter = new PortfolioListAdapter(getActivity(), portfolioListCopy);
+        this.listView = view.findViewById(R.id.portfolioListView);
+        this.listView.setAdapter(listAdapter);
+    }
+
+    public void updateDisplayedPortfolio(String textFilter){
+        ArrayList<StringFloatPair> results = new ArrayList<>();
+        if(textFilter.isEmpty()){
+            results = portfolioList;
+        }else{
+            for (StringFloatPair pair: portfolioList){
+                if(pair.code.contains(textFilter.toUpperCase().trim())){
+                    results.add(pair);
+                }
+            }
+        }
+        ((PortfolioListAdapter) listView.getAdapter()).updatePortfolioList(results);
     }
 }

@@ -42,13 +42,13 @@ public class StocksListAdapter extends ArrayAdapter<StringFloatPair> {
         TextView listStock = view.findViewById(R.id.stocksStockCode);
         TextView listPrice = view.findViewById(R.id.stocksStockPrice);
 
-        StringFloatPair listData = getItem(position);
+        StringFloatPair stockItem = getItem(position);
 
-        listStock.setText(listData.code);
-        String qtty = listData.qtty + "$";
+        listStock.setText(stockItem.code);
+        String qtty = String.format("%.2f", stockItem.qtty) + "$";
         listPrice.setText(qtty);
 
-        setDeleteListener(view, listData);
+        setDeleteListener(view, stockItem);
     }
 
     private void setDeleteListener(View view, StringFloatPair listData){
@@ -59,7 +59,6 @@ public class StocksListAdapter extends ArrayAdapter<StringFloatPair> {
                 showDeleteDialog(listData);
             }
         });
-
     }
 
     private void showDeleteDialog(final StringFloatPair selectedItem) {

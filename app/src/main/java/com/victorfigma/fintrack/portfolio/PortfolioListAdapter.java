@@ -5,6 +5,7 @@ import static com.victorfigma.fintrack.MainActivity.pythonGetPriceScrip;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatDelegate;
 
 import com.google.android.material.imageview.ShapeableImageView;
 import com.victorfigma.fintrack.R;
@@ -25,9 +27,11 @@ public class PortfolioListAdapter extends ArrayAdapter<StringFloatPair> {
 
     private AlertDialog.Builder mDeleteDialogBuilder;
     private AlertDialog.Builder mEditDialogBuilder;
+    private ArrayList<StringFloatPair> portfolioItemsArray;
 
     public PortfolioListAdapter(@NonNull Context context, ArrayList<StringFloatPair> dataArrayList) {
         super(context, R.layout.listed_item_portfolio, dataArrayList);
+        this.portfolioItemsArray = dataArrayList;
         mDeleteDialogBuilder = new AlertDialog.Builder(getContext());
         mEditDialogBuilder = new AlertDialog.Builder(getContext());
     }
@@ -35,36 +39,46 @@ public class PortfolioListAdapter extends ArrayAdapter<StringFloatPair> {
     @NonNull
     @Override
     public View getView(int position, @Nullable View view, ViewGroup parent) {
-        StringFloatPair listData = getItem(position);
-
         if (view == null) {
             view = LayoutInflater.from(getContext()).inflate(R.layout.listed_item_portfolio, parent, false);
         }
 
+        configPortfolioItem(position, view);
+
+        return view;
+    }
+
+    private void configPortfolioItem(int position, View view){
         TextView listStock = view.findViewById(R.id.portfolioStockCode);
         TextView listPrice = view.findViewById(R.id.portfolioStockPrice);
-        String qtty = String.format("%.2f", listData.qtty) + "$";
-        listStock.setText(listData.code);
+
+        StringFloatPair portfolioItem = getItem(position);
+        String qtty = String.format("%.2f", portfolioItem.qtty) + "$";
+        listStock.setText(portfolioItem.code);
         listPrice.setText(qtty);
 
-        ShapeableImageView deleteButton = view.findViewById(R.id.deleteItem);
-        ShapeableImageView editButton = view.findViewById(R.id.editItem);
+        setDeleteListener(view, portfolioItem);
+        setEditListener(view, portfolioItem);
+    }
 
+    private void setDeleteListener(View view, StringFloatPair listData) {
+        ShapeableImageView deleteButton = view.findViewById(R.id.deleteItem);
         deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showDeleteDialog(listData);
             }
         });
+    }
 
+    private void setEditListener(View view, StringFloatPair listData){
+        ShapeableImageView editButton = view.findViewById(R.id.editItem);
         editButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showEditDialog(listData);
             }
         });
-
-        return view;
     }
 
     private void showDeleteDialog(final StringFloatPair selectedItem) {
@@ -90,6 +104,7 @@ public class PortfolioListAdapter extends ArrayAdapter<StringFloatPair> {
         EditText inputQtty = new EditText(getContext());
         Float currentPrice = Float.parseFloat(pythonGetPriceScrip.getPrice(selectedItem.code));
         inputQtty.setHint(String.valueOf(selectedItem.qtty/currentPrice));
+        if(AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_NO) inputQtty.setTextColor(Color.BLACK);
 
         mEditDialogBuilder.setTitle("Input the new quantity for " + selectedItem.code)
                 .setView(inputQtty)
@@ -110,5 +125,11 @@ public class PortfolioListAdapter extends ArrayAdapter<StringFloatPair> {
                     }
                 })
                 .create().show();
+    }
+
+    public void updatePortfolioList(ArrayList<StringFloatPair> updatedArray){
+        portfolioItemsArray.clear();
+        portfolioItemsArray.addAll(updatedArray);
+        notifyDataSetChanged();
     }
 }

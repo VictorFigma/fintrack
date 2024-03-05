@@ -207,7 +207,8 @@ public class HomeActivity extends AppCompatActivity {
                 String qtty = qttyInput.getText().toString();
                 ManagePortfolioData.addPortfolio(HomeActivity.this, code, qtty);
                 dialog.dismiss();
-                replaceFragment(new PortfolioFragment());
+                currentFragment = new PortfolioFragment();
+                replaceFragment(currentFragment);
             }
         });
     }
@@ -225,7 +226,7 @@ public class HomeActivity extends AppCompatActivity {
                     frag.updateDisplayedStocks(query);
                 } else if (currentFragmentId == R.id.portfolio) {
                     PortfolioFragment frag = (PortfolioFragment) currentFragment;
-                    //TODO
+                    frag.updateDisplayedPortfolio(query);
                 }
                 return false;
             }
