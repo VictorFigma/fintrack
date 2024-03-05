@@ -3,7 +3,6 @@ package com.victorfigma.fintrack;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
-import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -29,26 +28,39 @@ import com.victorfigma.fintrack.stock.StocksFragment;
 public class HomeActivity extends AppCompatActivity {
 
     private int currentFragment;
-    private ActivityHomeBinding binding;
-    private FloatingActionButton btnShowDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        loadHomeLayout();
+        loadTheme();
+    }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu){
+        getMenuInflater().inflate(R.menu.top_navbar, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.swapTheme) { //Moon-Sun top_navbar
+            switchTheme();
+            return true;
+        }else if (item.getItemId() == R.id.searchBar){ //Search top_navbar
+            //TODO
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    /**
+     * Loads the home layout (top_navabar + bottom_navbar + "add button" listeners).
+     */
+    private void loadHomeLayout(){
+        ActivityHomeBinding binding;
         binding = ActivityHomeBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-
-        Toolbar toolbar = findViewById(R.id.topAppBar);
-        setSupportActionBar(toolbar);
-
-        btnShowDialog = findViewById(R.id.addButtom);
-        btnShowDialog.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showDialog();
-            }
-        });
 
         replaceFragment(new StocksFragment());
         currentFragment = R.id.stocks;
@@ -64,61 +76,15 @@ public class HomeActivity extends AppCompatActivity {
             return true;
         });
 
-        loadTheme();
+        setSupportActionBar(findViewById(R.id.topAppBar));
+
+        setAddButton();
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu){
-        getMenuInflater().inflate(R.menu.top_navbar, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId() == R.id.swapTheme) {
-            switchTheme();
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-    private void buttomns_actions(Dialog dialog){
-        Button btnCancel = dialog.findViewById(R.id.btnCancel); //Used in both stock & portfolio
-        btnCancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-            }
-        });
-
-        EditText codeInput = dialog.findViewById(R.id.addCode);
-        if (currentFragment == R.id.stocks) {
-            Button btnAddStock = dialog.findViewById(R.id.btnAdd);
-            btnAddStock.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    String code = codeInput.getText().toString().toUpperCase();
-                    ManageStockData.addStock(HomeActivity.this, code);
-                    replaceFragment(new StocksFragment());
-                    dialog.dismiss();
-                }
-            });
-        }else if (currentFragment == R.id.portfolio){
-            Button btnAddPortfolio = dialog.findViewById(R.id.btnAdd);
-            btnAddPortfolio.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    EditText qttyInput = dialog.findViewById(R.id.addQtty);
-                    String code = codeInput.getText().toString().toUpperCase();
-                    String qtty = qttyInput.getText().toString();
-                    ManagePortfolioData.addPortfolio(HomeActivity.this, code, qtty);
-                    replaceFragment(new PortfolioFragment());
-                    dialog.dismiss();
-                }
-            });
-        }
-    }
-
+    /**
+     * Loads and applies the theme preference stored in the app's shared preferences.
+     * If no preference is saved, it checks the user's system theme mode.
+     */
     private void loadTheme(){
         SharedPreferences sharedPreferences = getSharedPreferences("THEME_MODE", Context.MODE_PRIVATE);
         boolean phoneMode = AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES;
@@ -131,6 +97,11 @@ public class HomeActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Replaces the fragment displayed in the container with a new fragment.
+     *
+     * @param fragment: the new fragment to be displayed.
+     */
     private void replaceFragment(Fragment fragment){
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -138,14 +109,98 @@ public class HomeActivity extends AppCompatActivity {
         fragmentTransaction.commit();
     }
 
-    private void showDialog(){
+    /**
+     * Configures the add button (dialog + listeners) for both stock & portfolio(stock + qtty) items.
+     */
+    private void setAddButton(){
         Dialog dialog = new Dialog(this);
-        if(currentFragment == R.id.stocks) dialog.setContentView(R.layout.add_stock);
-        else if(currentFragment == R.id.portfolio) dialog.setContentView(R.layout.add_portfolio);
-        buttomns_actions(dialog);
-        dialog.show();
+        FloatingActionButton btnShowDialog;
+        btnShowDialog = findViewById(R.id.addButtom);
+        btnShowDialog.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (currentFragment == R.id.stocks) dialog.setContentView(R.layout.add_stock);
+                else if (currentFragment == R.id.portfolio) dialog.setContentView(R.layout.add_portfolio);
+                setAddButtonListeners(dialog);
+                dialog.show();
+            }
+        });
     }
 
+    /**
+     * Configures the click actions (cancel/add) for the add stock/portfolio dialog.
+     *
+     * @param dialog: the dialog instance to configure actions for.
+     */
+    private void setAddButtonListeners(Dialog dialog){
+            setListenerCancel(dialog);
+
+            EditText codeInput = dialog.findViewById(R.id.addCode);
+            if (currentFragment == R.id.stocks) {
+                setListenerAddStock(dialog, codeInput);
+            }else if (currentFragment == R.id.portfolio){
+                setListenerAddPortfolio(dialog, codeInput);
+            }
+    }
+
+    /**
+     * Attaches a click listener that dismisses the dialog.
+     *
+     * @param dialog: the dialog to configure the button listener on.
+     */
+    private void setListenerCancel(Dialog dialog){
+        Button btnCancel = dialog.findViewById(R.id.btnCancel); //Used in both stock & portfolio
+        btnCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+    }
+
+    /**
+     * Attaches a click listener that adds a stock item.
+     *
+     * @param dialog the dialog to configure the button listener on.
+     * @param codeInput the EditText field containing the stock code.
+     */
+    private void setListenerAddStock(Dialog dialog, EditText codeInput){
+        Button btnAddStock = dialog.findViewById(R.id.btnAdd);
+        btnAddStock.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String code = codeInput.getText().toString().toUpperCase();
+                ManageStockData.addStock(HomeActivity.this, code);
+                dialog.dismiss();
+                replaceFragment(new StocksFragment());
+            }
+        });
+    }
+
+    /**
+     * Attaches a click listener that adds a portfolio(stock + qtty) item.
+     *
+     * @param dialog the dialog to configure the button listener on.
+     * @param codeInput the EditText field containing the StringFloatPair (stock code, qtty).
+     */
+    private void setListenerAddPortfolio(Dialog dialog, EditText codeInput){
+        Button btnAddPortfolio = dialog.findViewById(R.id.btnAdd);
+        btnAddPortfolio.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                EditText qttyInput = dialog.findViewById(R.id.addQtty);
+                String code = codeInput.getText().toString().toUpperCase();
+                String qtty = qttyInput.getText().toString();
+                ManagePortfolioData.addPortfolio(HomeActivity.this, code, qtty);
+                dialog.dismiss();
+                replaceFragment(new PortfolioFragment());
+            }
+        });
+    }
+
+    /**
+     * Toggles the app's theme between light and dark mode, saving the current theme preference in SharedPreferences.
+     */
     private void switchTheme() {
         SharedPreferences sharedPreferences = getSharedPreferences("THEME_MODE", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor;
