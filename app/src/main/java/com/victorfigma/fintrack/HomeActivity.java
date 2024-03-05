@@ -3,6 +3,7 @@ package com.victorfigma.fintrack;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -55,7 +56,7 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     /**
-     * Loads the home layout (top_navabar + bottom_navbar + "add button" listeners).
+     * Loads the home layout (bottom_navbar + top_navabar + "add button" listeners).
      */
     private void loadHomeLayout(){
         ActivityHomeBinding binding;
@@ -66,7 +67,6 @@ public class HomeActivity extends AppCompatActivity {
         currentFragment = R.id.stocks;
         binding.bottomNavbarView.setBackground(null);
         binding.bottomNavbarView.setOnItemSelectedListener(item -> {
-
             //Can't do a switch since constants are not final in ADT 14
             int id = item.getItemId();
             if(id == R.id.stocks) replaceFragment(new StocksFragment());
@@ -76,7 +76,9 @@ public class HomeActivity extends AppCompatActivity {
             return true;
         });
 
-        setSupportActionBar(findViewById(R.id.topAppBar));
+        Toolbar toolbar = findViewById(R.id.topAppBar);
+        toolbar.setCollapseIcon(R.drawable.baseline_arrow_back_24);
+        setSupportActionBar(toolbar);
 
         setAddButton();
     }

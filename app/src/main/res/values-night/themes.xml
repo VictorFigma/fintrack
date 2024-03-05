@@ -2,7 +2,8 @@
 
     <style name="Theme.FinTrack" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <item name="colorPrimary">@color/green</item>
-        <item name="colorSecondary">@color/white</item>
+        <item name="colorSecondary">@color/light_white</item>
+        <item name="android:editTextColor">@color/light_white</item>
     </style>
 
     <style name="ScreenBackground"><item name="android:background">@color/dark_grey</item></style>
@@ -16,6 +17,11 @@
     <style name="roundedImageViewRounded">
         <item name="cornerFamily"> rounded </item>
         <item name="cornerSize"> 50% </item>
+    </style>
+
+    <!-- Must rewrite, themes doesn't work with SearchView of Androidx" -->
+    <style name="Widget.AppCompat.SearchView" parent="Widget.AppCompat.SearchView">
+        <item name="closeIcon">@drawable/baseline_close_24</item>
     </style>
 
 </resources>

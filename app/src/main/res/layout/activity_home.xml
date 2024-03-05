@@ -18,6 +18,7 @@
         android:id="@+id/topAppBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:navigationIcon="@drawable/baseline_data_exploration_24"
         style="@style/TopBarBackground"
         app:logo="@drawable/logo"
         app:title=" "
@@ -52,7 +53,6 @@
         app:backgroundTint="@color/black"
         style="@style/AddFloatingButton"
         app:layout_anchor="@id/bottomNavbar"
-        app:maxImageSize="40dp">
-    </com.google.android.material.floatingactionbutton.FloatingActionButton>
+        app:maxImageSize="40dp"/>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
