@@ -32,11 +32,9 @@ public class HomeActivity extends AppCompatActivity {
     private int currentFragmentId;
     private Fragment currentFragment;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         loadHomeLayout();
         loadTheme();
     }
@@ -56,7 +54,6 @@ public class HomeActivity extends AppCompatActivity {
             setListenerSearch(item);
             return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -64,28 +61,8 @@ public class HomeActivity extends AppCompatActivity {
      * Loads the home layout (bottom_navbar + top_navabar + "add button" listeners).
      */
     private void loadHomeLayout(){
-        ActivityHomeBinding binding = ActivityHomeBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
-
-        currentFragment = new StocksFragment();
-        replaceFragment(currentFragment);
-        currentFragmentId = R.id.stocks;
-        binding.bottomNavbarView.setBackground(null);
-        binding.bottomNavbarView.setOnItemSelectedListener(item -> {
-
-            //Can't do a switch since constants are not final in ADT 14
-            currentFragmentId = item.getItemId();
-            if(currentFragmentId == R.id.stocks){
-                currentFragment = new StocksFragment();
-                replaceFragment(currentFragment);
-            }
-            else if(currentFragmentId == R.id.portfolio){
-                currentFragment =new PortfolioFragment();
-                replaceFragment(currentFragment);
-            }
-
-            return true;
-        });
+        setDefaultFragment();
+        setListenerFragment();
 
         Toolbar toolbar = findViewById(R.id.topAppBar);
         toolbar.setCollapseIcon(R.drawable.baseline_arrow_back_24);
@@ -148,36 +125,29 @@ public class HomeActivity extends AppCompatActivity {
     private void setAddButtonListeners(Dialog dialog){
             setListenerCancel(dialog);
 
-            EditText codeInput = dialog.findViewById(R.id.addCode);
             if (currentFragmentId == R.id.stocks) {
-                setListenerAddStock(dialog, codeInput);
+                setListenerAddStock(dialog);
             }else if (currentFragmentId == R.id.portfolio){
-                setListenerAddPortfolio(dialog, codeInput);
+                setListenerAddPortfolio(dialog);
             }
     }
 
     /**
-     * Attaches a click listener that dismisses the dialog.
-     *
-     * @param dialog: the dialog to configure the button listener on.
+     * Loads the default fragment.
      */
-    private void setListenerCancel(Dialog dialog){
-        Button btnCancel = dialog.findViewById(R.id.btnCancel); //Used in both stock & portfolio
-        btnCancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-            }
-        });
+    private void setDefaultFragment(){
+        currentFragment = new StocksFragment();
+        replaceFragment(currentFragment);
+        currentFragmentId = R.id.stocks;
     }
 
     /**
      * Attaches a click listener that adds a stock item.
      *
-     * @param dialog the dialog to configure the button listener on.
-     * @param codeInput the EditText field containing the stock code.
+     * @param dialog: the dialog where the add button is.
      */
-    private void setListenerAddStock(Dialog dialog, EditText codeInput){
+    private void setListenerAddStock(Dialog dialog){
+        EditText codeInput = dialog.findViewById(R.id.addCode);
         Button btnAddStock = dialog.findViewById(R.id.btnAdd);
         btnAddStock.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -192,16 +162,56 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     /**
+     * Attaches a click listener that dismisses the dialog.
+     *
+     * @param dialog: the dialog where the cancel button is.
+     */
+    private void setListenerCancel(Dialog dialog){
+        Button btnCancel = dialog.findViewById(R.id.btnCancel); //Used in both stock & portfolio
+        btnCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+    }
+
+    /**
+     * Attaches a click listener that changes the fragment.
+     */
+    private void setListenerFragment(){
+        ActivityHomeBinding binding = ActivityHomeBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
+
+        binding.bottomNavbarView.setBackground(null);
+        binding.bottomNavbarView.setOnItemSelectedListener(item -> {
+
+            //Can't do a switch since constants are not final in ADT 14
+            currentFragmentId = item.getItemId();
+            if(currentFragmentId == R.id.stocks){
+                currentFragment = new StocksFragment();
+                replaceFragment(currentFragment);
+            }
+            else if(currentFragmentId == R.id.portfolio){
+                currentFragment =new PortfolioFragment();
+                replaceFragment(currentFragment);
+            }
+
+            return true;
+        });
+    }
+
+    /**
      * Attaches a click listener that adds a portfolio(stock + qtty) item.
      *
-     * @param dialog the dialog to configure the button listener on.
-     * @param codeInput the EditText field containing the StringFloatPair (stock code, qtty).
+     * @param dialog: the dialog where the add button is.
      */
-    private void setListenerAddPortfolio(Dialog dialog, EditText codeInput){
+    private void setListenerAddPortfolio(Dialog dialog){
         Button btnAddPortfolio = dialog.findViewById(R.id.btnAdd);
         btnAddPortfolio.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                EditText codeInput = dialog.findViewById(R.id.addCode);
                 EditText qttyInput = dialog.findViewById(R.id.addQtty);
                 String code = codeInput.getText().toString().toUpperCase();
                 String qtty = qttyInput.getText().toString();
@@ -213,6 +223,11 @@ public class HomeActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Attaches a click listener that updates the stock/portfolio list displayed.
+     *
+     * @param item: the searchBar.
+     */
     private void setListenerSearch(MenuItem item){
         SearchView searchView = (SearchView) item.getActionView();
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {

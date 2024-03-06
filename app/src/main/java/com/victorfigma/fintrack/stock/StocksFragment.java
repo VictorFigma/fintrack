@@ -29,6 +29,11 @@ public class StocksFragment extends Fragment {
         return view;
     }
 
+    /**
+     * Retrieves and processes the stored stocks items from shared preferences, searching the current stock value for every stock item.
+     *
+     * @return a sorted ArrayList of StringFloatPair objects representing the stocks to track.
+     */
     private ArrayList<StringFloatPair> retrieveStoredStocks(){
         ArrayList<StringFloatPair> dataArrayList = new ArrayList<>();
 
@@ -46,6 +51,11 @@ public class StocksFragment extends Fragment {
         return dataArrayList;
     }
 
+    /**
+     * Sets the adapter for the stocks list view.
+     *
+     * @param view the view containing the list view to be populated.
+     */
     private void setAdapter(View view){
         this.stockList = retrieveStoredStocks();
         ArrayList<StringFloatPair> stockListCopy = new ArrayList<>(stockList); //Stocklist object can't be linked to the adapter because the search filter will edit it
@@ -54,6 +64,11 @@ public class StocksFragment extends Fragment {
         listView.setAdapter(listAdapter);
     }
 
+    /**
+     * Updates the displayed stock list items based on a provided text filter.
+     *
+     * @param textFilter the text to filter the stock list by.
+     */
     public void updateDisplayedStocks(String textFilter){
         ArrayList<StringFloatPair> results = new ArrayList<>();
         if(textFilter.isEmpty()){

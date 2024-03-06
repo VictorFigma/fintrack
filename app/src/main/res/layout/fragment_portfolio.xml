@@ -17,7 +17,6 @@
         android:layout_marginStart="13dp"
         tools:listitem="@layout/listed_item_portfolio"
         android:divider="@android:color/transparent"
-        android:dividerHeight="10sp"
-        />
+        android:dividerHeight="10sp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

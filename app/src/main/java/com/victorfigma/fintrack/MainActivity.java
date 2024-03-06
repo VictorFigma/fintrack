@@ -10,7 +10,7 @@ import com.victorfigma.fintrack.utils.GetPrice;
 
 public class MainActivity extends AppCompatActivity {
 
-    public static int SPLASH_TIMER = 1303;
+    public static final int SPLASH_TIMER = 1303;
 
     public static GetPrice pythonGetPriceScrip;
 

@@ -26,6 +26,15 @@ public class StocksListAdapter extends ArrayAdapter<StringFloatPair> {
         this.stockItemsArray = dataArrayList;
     }
 
+    /**
+     * Gets a view for a specific position in the list adapter.
+     *
+     * @param position the position of the item in the dataset.
+     * @param view the existing view to reuse, or null if not available.
+     * @param parent the parent ViewGroup that owns this view.
+     * @return a configured view for the specified position.
+     * @throws NullPointerException if context is null.
+     */
     @NonNull
     @Override
     public View getView(int position, @Nullable View view, ViewGroup parent){
@@ -38,6 +47,12 @@ public class StocksListAdapter extends ArrayAdapter<StringFloatPair> {
         return view;
     }
 
+    /**
+     * Configures a stock item view with data from the given position.
+     *
+     * @param position the position of the item in the dataset.
+     * @param view the view to configure.
+     */
     private void configStockItem(int position, View view){
         TextView listStock = view.findViewById(R.id.stocksStockCode);
         TextView listPrice = view.findViewById(R.id.stocksStockPrice);
@@ -51,6 +66,12 @@ public class StocksListAdapter extends ArrayAdapter<StringFloatPair> {
         setDeleteListener(view, stockItem);
     }
 
+    /**
+     * Sets up a listener on the delete button to remove a stock.
+     *
+     * @param view the view containing the button.
+     * @param listData the StringFloatPair object associated with the item to be deleted.
+     */
     private void setDeleteListener(View view, StringFloatPair listData){
         View deleteButton = view.findViewById(R.id.deleteItem);
         deleteButton.setOnClickListener(new View.OnClickListener() {
@@ -61,6 +82,11 @@ public class StocksListAdapter extends ArrayAdapter<StringFloatPair> {
         });
     }
 
+    /**
+     * Displays a confirmation dialog for deleting a stock item.
+     *
+     * @param selectedItem the stock item to be deleted.
+     */
     private void showDeleteDialog(final StringFloatPair selectedItem) {
         AlertDialog.Builder mDeleteDialogBuilder = new AlertDialog.Builder(getContext());
         mDeleteDialogBuilder.setTitle("Are you sure you want to delete \"" + selectedItem.code + "\" ?")
@@ -81,6 +107,11 @@ public class StocksListAdapter extends ArrayAdapter<StringFloatPair> {
                 .create().show();
     }
 
+    /**
+     * Updates the internal portfolio list and notifies the adapter of changes.
+     *
+     * @param updatedArray the new list of StringFloatPair objects representing the portfolio.
+     */
     public void updateStockList(ArrayList<StringFloatPair> updatedArray){
         stockItemsArray.clear();
         stockItemsArray.addAll(updatedArray);

@@ -36,6 +36,15 @@ public class PortfolioListAdapter extends ArrayAdapter<StringFloatPair> {
         mEditDialogBuilder = new AlertDialog.Builder(getContext());
     }
 
+    /**
+     * Gets a view for a specific position in the list adapter.
+     *
+     * @param position the position of the item in the dataset.
+     * @param view the existing view to reuse, or null if not available.
+     * @param parent the parent ViewGroup that owns this view.
+     * @return a configured view for the specified position.
+     * @throws NullPointerException if context is null.
+     */
     @NonNull
     @Override
     public View getView(int position, @Nullable View view, ViewGroup parent) {
@@ -48,6 +57,12 @@ public class PortfolioListAdapter extends ArrayAdapter<StringFloatPair> {
         return view;
     }
 
+    /**
+     * Configures a portfolio item view with data from the given position.
+     *
+     * @param position the position of the item in the dataset.
+     * @param view the view to configure.
+     */
     private void configPortfolioItem(int position, View view){
         TextView listStock = view.findViewById(R.id.portfolioStockCode);
         TextView listPrice = view.findViewById(R.id.portfolioStockPrice);
@@ -61,6 +76,12 @@ public class PortfolioListAdapter extends ArrayAdapter<StringFloatPair> {
         setEditListener(view, portfolioItem);
     }
 
+    /**
+     * Sets up a listener on the delete button to remove a portfolio.
+     *
+     * @param view the view containing the button.
+     * @param listData the StringFloatPair object associated with the item to be deleted.
+     */
     private void setDeleteListener(View view, StringFloatPair listData) {
         ShapeableImageView deleteButton = view.findViewById(R.id.deleteItem);
         deleteButton.setOnClickListener(new View.OnClickListener() {
@@ -71,6 +92,12 @@ public class PortfolioListAdapter extends ArrayAdapter<StringFloatPair> {
         });
     }
 
+    /**
+     * Sets up a listener on the edit button to edit the qtty of a portfolio item.
+     *
+     * @param view the view containing the button.
+     * @param listData the StringFloatPair object associated with the item to be deleted.
+     */
     private void setEditListener(View view, StringFloatPair listData){
         ShapeableImageView editButton = view.findViewById(R.id.editItem);
         editButton.setOnClickListener(new View.OnClickListener() {
@@ -81,6 +108,11 @@ public class PortfolioListAdapter extends ArrayAdapter<StringFloatPair> {
         });
     }
 
+    /**
+     * Displays a confirmation dialog for deleting a portfolio item.
+     *
+     * @param selectedItem the portfolio item to be deleted.
+     */
     private void showDeleteDialog(final StringFloatPair selectedItem) {
         mDeleteDialogBuilder.setTitle("Are you sure you want to delete \"" + selectedItem.code + "\" ?")
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
@@ -100,6 +132,11 @@ public class PortfolioListAdapter extends ArrayAdapter<StringFloatPair> {
                 .create().show();
     }
 
+    /**
+     * Displays a confirmation dialog for editing the qtty of a portfolio item.
+     *
+     * @param selectedItem the portfolio item to be edited
+     */
     private void showEditDialog(final StringFloatPair selectedItem) {
         EditText inputQtty = new EditText(getContext());
         Float currentPrice = Float.parseFloat(pythonGetPriceScrip.getPrice(selectedItem.code));
@@ -127,6 +164,11 @@ public class PortfolioListAdapter extends ArrayAdapter<StringFloatPair> {
                 .create().show();
     }
 
+    /**
+     * Updates the internal portfolio list and notifies the adapter of changes.
+     *
+     * @param updatedArray the new list of StringFloatPair objects representing the portfolio.
+     */
     public void updatePortfolioList(ArrayList<StringFloatPair> updatedArray){
         portfolioItemsArray.clear();
         portfolioItemsArray.addAll(updatedArray);

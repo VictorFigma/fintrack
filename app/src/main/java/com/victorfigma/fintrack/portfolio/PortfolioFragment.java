@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 public class PortfolioFragment extends Fragment {
+
     private ArrayList<StringFloatPair> portfolioList;
     private ListView listView;
     private PortfolioListAdapter listAdapter;
@@ -29,6 +30,11 @@ public class PortfolioFragment extends Fragment {
         return view;
     }
 
+    /**
+     * Retrieves and processes the stored portfolio items from shared preferences, calculating the current total value (qtty * current stock value) for every portfolio item.
+     *
+     * @return a sorted ArrayList of StringFloatPair objects representing the portfolio.
+     */
     private ArrayList<StringFloatPair> retrieveStoredPortfolio(){
         ArrayList<StringFloatPair> dataArrayList = new ArrayList<>();
 
@@ -46,6 +52,11 @@ public class PortfolioFragment extends Fragment {
         return dataArrayList;
     }
 
+    /**
+     * Sets the adapter for the portfolio list view.
+     *
+     * @param view the view containing the list view to be populated.
+     */
     private void setAdapter(View view){
         this.portfolioList = retrieveStoredPortfolio();
         ArrayList<StringFloatPair> portfolioListCopy = new ArrayList<>(portfolioList); //Stocklist object can't be linked to the adapter because the search filter will edit it
@@ -55,6 +66,11 @@ public class PortfolioFragment extends Fragment {
         this.listView.setAdapter(listAdapter);
     }
 
+    /**
+     * Updates the displayed portfolio list items based on a provided text filter.
+     *
+     * @param textFilter the text to filter the portfolio list by.
+     */
     public void updateDisplayedPortfolio(String textFilter){
         ArrayList<StringFloatPair> results = new ArrayList<>();
         if(textFilter.isEmpty()){
