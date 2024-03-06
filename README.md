@@ -1,4 +1,4 @@
-<div align="center">  <img src="docs/fintrack_logo.png" alt="LOGO" width="500" height="500">  </div>
+<div align="center">  <img src="docs/fintrack_logo.png" alt="LOGO" width="800" height="300">  </div>
 
 ## About
 FinTrack is an Android APP that tracks the prices of a custom list of stocks. It also includes a portfolio tracking section.
