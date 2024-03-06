@@ -1,0 +1,14 @@
+*** IMPORTANT LEGAL DISCLAIMER ***
+Yahoo!, Y!Finance, and Yahoo! finance are registered trademarks of Yahoo, Inc.
+You should refer to Yahoo!'s terms of use for details on your rights to use the actual data you download.
+You should also follow yfinance terms of use.
+
+*** IMPORTANT CONSIDERATIONS ***
+This app never stores any data of the stock prices.
+This app acts as an android interface of yfinance, you will be the one who download the data. 
+This app was deveveloped for educational purposes only.
+Despite of what the following license says:
+-The app can not be used for other purposes. 
+-Publishing this app on any store is strictly forbidden.
+
+FinTrack © 2024 by Victor Figueroa is licensed under Attribution-NonCommercial-ShareAlike 4.0 International.
