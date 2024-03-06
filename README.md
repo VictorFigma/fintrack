@@ -1,10 +1,10 @@
-<div align="center">  <img src="doc/fintrack_logo.png" alt="LOGO">  </div>
+<div align="center">  <img src="docs/fintrack_logo.png" alt="LOGO" width="500" height="500">  </div>
 
 ## About
 FinTrack is an Android APP that tracks the prices of a custom list of stocks. It also includes a portfolio tracking section.
 
 ## DEMO
-<p align="center">  <a href="https://youtu.be/9uaMmw6xEXU">  <img src="doc/demo_fintrack.png" alt="videoDemo"> </a> </p>
+[![videoDemo](docs/demo_fintrack.png)](https://youtu.be/9uaMmw6xEXU) 
 
 ## Contact
 Victor Figueroa  - victorfigma@gmail.com
