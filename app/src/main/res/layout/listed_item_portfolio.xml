@@ -5,7 +5,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     app:cardCornerRadius="20dp"
     app:cardElevation="2dp"
-    android:layout_width="365dp"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     style="@style/CardBackground">
 
@@ -16,7 +16,7 @@
         <TextView
             android:id="@+id/portfolioStockCode"
             style="@style/TextColor"
-            android:layout_width="130dp"
+            android:layout_width="135dp"
             android:layout_height="62dp"
             android:layout_marginLeft="14dp"
             android:gravity="center_vertical"
@@ -26,7 +26,7 @@
         <TextView
             android:id="@+id/portfolioStockPrice"
             style="@style/TextColor"
-            android:layout_width="150dp"
+            android:layout_width="145dp"
             android:layout_height="64dp"
             android:layout_marginStart="-59dp"
             android:layout_marginEnd="8dp"
