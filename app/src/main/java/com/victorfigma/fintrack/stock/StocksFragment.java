@@ -41,12 +41,14 @@ public class StocksFragment extends Fragment {
 
         String[] retrievedStocks = util.getStocks();
 
-        for (int i = 0; i < retrievedStocks.length; i++) {
-            String code = retrievedStocks[i];
-            Float qtty = Float.parseFloat(pythonGetPriceScrip.getPrice(code));
-            dataArrayList.add(new StringFloatPair(code, qtty));
+        if(retrievedStocks != null) {
+            for (int i = 0; i < retrievedStocks.length; i++) {
+                String code = retrievedStocks[i];
+                Float qtty = Float.parseFloat(pythonGetPriceScrip.getPrice(code));
+                dataArrayList.add(new StringFloatPair(code, qtty));
+            }
+            Collections.sort(dataArrayList, new StringFloatPair.StringFloatPairComparator());
         }
-        Collections.sort(dataArrayList, new StringFloatPair.StringFloatPairComparator());
 
         return dataArrayList;
     }

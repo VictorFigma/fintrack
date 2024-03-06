@@ -77,7 +77,7 @@ public class HomeActivity extends AppCompatActivity {
      */
     private void loadTheme(){
         SharedPreferences sharedPreferences = getSharedPreferences("THEME_MODE", Context.MODE_PRIVATE);
-        boolean phoneMode = AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES;
+        boolean phoneMode = AppCompatDelegate.getDefaultNightMode() != AppCompatDelegate.MODE_NIGHT_YES;
         boolean darkMode = sharedPreferences.getBoolean("nightMode", phoneMode);
 
         if(darkMode){
