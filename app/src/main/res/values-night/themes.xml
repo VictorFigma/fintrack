@@ -19,9 +19,4 @@
         <item name="cornerSize"> 50% </item>
     </style>
 
-    <!-- Must rewrite, themes doesn't work with SearchView of Androidx" -->
-    <style name="Widget.AppCompat.SearchView" parent="Widget.AppCompat.SearchView">
-        <item name="closeIcon">@drawable/baseline_close_24</item>
-    </style>
-
 </resources>
